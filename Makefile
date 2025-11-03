@@ -60,49 +60,12 @@ regen: $(BIN)
 	fi
 
 install-tools:
-	@bash -eu -c '\
-	if command -v apt-get >/dev/null 2>&1; then \
-		$(SUDO) apt-get update; \
-		$(SUDO) apt-get install -y imagemagick ffmpeg || true; \
-		$(SUDO) apt-get install -y libheif-examples libheif-tools || true; \
-		echo "Пакеты установлены (apt)."; \
-	elif command -v dnf >/dev/null 2>&1; then \
-		$(SUDO) dnf install -y ImageMagick ffmpeg libheif libheif-tools || true; \
-		echo "Пакеты установлены (dnf)."; \
-	elif command -v yum >/dev/null 2>&1; then \
-		$(SUDO) yum install -y ImageMagick ffmpeg libheif libheif-tools || true; \
-		echo "Пакеты установлены (yum)."; \
-	elif command -v pacman >/dev/null 2>&1; then \
-		$(SUDO) pacman -Syu --noconfirm imagemagick ffmpeg libheif || true; \
-		echo "Пакеты установлены (pacman)."; \
-	elif command -v zypper >/dev/null 2>&1; then \
-		$(SUDO) zypper --non-interactive install ImageMagick ffmpeg libheif-tools || true; \
-		echo "Пакеты установлены (zypper)."; \
-	elif command -v apk >/dev/null 2>&1; then \
-		$(SUDO) apk add --no-cache imagemagick ffmpeg libheif-tools || true; \
-		echo "Пакеты установлены (apk)."; \
-	elif command -v brew >/dev/null 2>&1; then \
-		brew update; \
-		brew install imagemagick ffmpeg libheif || true; \
-		echo "Пакеты установлены (brew)."; \
-	elif command -v choco >/dev/null 2>&1; then \
-		echo "Обнаружен Windows (choco). Запустите от администратора:"; \
-		echo "  choco install -y imagemagick ffmpeg"; \
-		echo "  choco install -y libheif || echo 'установите libheif вручную'"; \
-	elif command -v winget >/dev/null 2>&1; then \
-		echo "Обнаружен Windows (winget). Выполните:"; \
-		echo "  winget install --id=ImageMagick.ImageMagick -e"; \
-		echo "  winget install --id=Gyan.FFmpeg -e"; \
-		echo "  winget install --id=strukturag.Libheif -e || echo 'установите libheif вручную'"; \
-	else \
-		echo "Не удалось определить пакетный менеджер. Установите вручную: ImageMagick, ffmpeg, libheif/heif-convert."; \
-	fi'
+	brew update
+	brew install imagemagick ffmpeg libheif ghostscript
 
-clean:
-	@rm -f $(BIN)
+clear:
+	rm -rf foto pdf
 
-test-add:
-	./PDFmed/medPDF add -p 000070860041.jpg -s "Эндокринология" -d 01-02-2001
-	./PDFmed/medPDF add -p 000070860042.jpg -s "Эндокринология" -d 01-02-2000
-	./PDFmed/medPDF add -p IMG_2251.HEIC -s "Эндокринология" -d 01-03-2001
-	./PDFmed/medPDF add -p IMG_2252.HEIC -s "Эндокринология" -d 01-03-2001
+add:
+	./PDFmed/medPDF add -p raw_foto/IMG_2361.jpeg -s "Дерматолог" -d 18-08-2025
+	./PDFmed/medPDF add -p raw_foto/IMG_2475.jpeg -s "Травматолог" -d 01-08-2025
